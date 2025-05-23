@@ -1,7 +1,9 @@
+# calculate.py
+
 import unittest
 from unittest.mock import patch
-import pytest
 
+import pytest
 from app.calc import Calculator
 
 
@@ -51,6 +53,59 @@ class TestCalculate(unittest.TestCase):
         self.assertEqual(0, self.calc.multiply(-1, 0))
         self.assertEqual(-2, self.calc.multiply(-1, 2))
 
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_multiply_method_fails_with_nan_parameter(self, _validate_permissions):
+        self.assertRaises(TypeError, self.calc.multiply, "2", 2)
+        self.assertRaises(TypeError, self.calc.multiply, 2, "2")
+        self.assertRaises(TypeError, self.calc.multiply, "2", "2")
+        self.assertRaises(TypeError, self.calc.multiply, None, 2)
+        self.assertRaises(TypeError, self.calc.multiply, 2, None)
+        self.assertRaises(TypeError, self.calc.multiply, object(), 2)
+        self.assertRaises(TypeError, self.calc.multiply, 2, object())
+
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_power_method_returns_correct_result(self, _validate_permissions):
+        self.assertEqual(4, self.calc.power(2, 2))
+        self.assertEqual(1, self.calc.power(1, 0))
+        self.assertEqual(0, self.calc.power(0, 0))
+        self.assertEqual(-1, self.calc.power(-1, 1))
+
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_power_method_fails_with_nan_parameter(self, _validate_permissions):
+        self.assertRaises(TypeError, self.calc.power, "2", 2)
+        self.assertRaises(TypeError, self.calc.power, 2, "2")
+        self.assertRaises(TypeError, self.calc.power, "2", "2")
+        self.assertRaises(TypeError, self.calc.power, None, 2)
+        self.assertRaises(TypeError, self.calc.power, 2, None)
+        self.assertRaises(TypeError, self.calc.power, object(), 2)
+        self.assertRaises(TypeError, self.calc.power, 2, object())
+
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_square_method_returns_correct_result(self, _validate_permissions):
+        self.assertEqual(4, self.calc.square(2))
+        self.assertEqual(0, self.calc.square(0))
+        self.assertEqual(1, self.calc.square(-1))
+
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_square_method_fails_with_nan_parameter(self, _validate_permissions):
+        self.assertRaises(TypeError, self.calc.square, "2")
+        self.assertRaises(TypeError, self.calc.square, None)
+        self.assertRaises(TypeError, self.calc.square, object())
+
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_log10_method_returns_correct_result(self, _validate_permissions):
+        self.assertEqual(0, self.calc.log10(1))
+        self.assertEqual(1, self.calc.log10(10))
+        self.assertEqual(2, self.calc.log10(100))
+        self.assertEqual(-1, self.calc.log10(0.1))
+
+    @patch('app.util.validate_permissions', side_effect=mocked_validation, create=True)
+    def test_log10_method_fails_with_nan_parameter(self, _validate_permissions):
+        self.assertRaises(TypeError, self.calc.log10, "2")
+        self.assertRaises(TypeError, self.calc.log10, None)
+        self.assertRaises(TypeError, self.calc.log10, object())
+        self.assertRaises(ValueError, self.calc.log10, -1)
+        self.assertRaises(ValueError, self.calc.log10, 0)
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()

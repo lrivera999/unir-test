@@ -1,5 +1,4 @@
 import http.client
-
 from flask import Flask
 
 from app import util
@@ -65,7 +64,7 @@ def square(op_1):
         return (str(e), http.client.BAD_REQUEST, HEADERS)
 
 @api_application.route("/calc/logarithm/<op_1>", methods=["GET"])
-def square(op_1):
+def logarithmbase10(op_1):
     try:
         num_1 = util.convert_to_number(op_1)
         return ("{}".format(CALCULATOR.log10(num_1)), http.client.OK, HEADERS)
